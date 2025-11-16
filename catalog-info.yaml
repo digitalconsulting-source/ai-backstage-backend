@@ -28,15 +28,14 @@ spec:
   lifecycle: production
   owner: ai-team
   definition: |
-    openapi: 3.0.0
-    info:
-      title: AI Backend API
-      version: 1.0.0
-    paths:
-      /predict:
-        post:
-          summary: Perform prediction
-          responses:
-            "200":
-              description: Successful prediction
-
+      openapi: 3.0.0
+      info:
+        title: AI Backend API
+        version: 1.0.0
+      paths:
+        /predict:
+          post:
+            summary: Perform prediction
+            responses:
+              "200":
+                description: Successful prediction
