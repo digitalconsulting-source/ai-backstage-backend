@@ -45,15 +45,6 @@ spec:
                 description: Successful prediction
 ---
 apiVersion: backstage.io/v1alpha1
-kind: Resource
-metadata:
-  name: vector-db
-  description: Vector database used for embeddings search
-spec:
-  type: database
-  owner: ai-team
----
-apiVersion: backstage.io/v1alpha1
 kind: Location
 metadata:
   name: ai-project-techdocs
