@@ -43,12 +43,3 @@ spec:
             responses:
               "200":
                 description: Successful prediction
----
-apiVersion: backstage.io/v1alpha1
-kind: Location
-metadata:
-  name: ai-project-techdocs
-  description: TechDocs location for AI backend
-spec:
-  type: url
-  target: ./docs
