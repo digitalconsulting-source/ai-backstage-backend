@@ -11,7 +11,7 @@ metadata:
     - service
 spec:
   type: service
-  lifecycle: production
+  lifecycle: experimental
   owner: ai-team
   system: ai-project
   providesApis:
