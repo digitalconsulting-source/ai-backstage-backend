@@ -2,9 +2,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ai-project-backend
+  description: Backend service for the AI project
   annotations:
     backstage.io/techdocs-ref: dir:.
-  description: Backend service for the AI project
   tags:
     - backend
     - ai
@@ -16,9 +16,6 @@ spec:
   system: ai-project
   providesApis:
     - ai-backend-api
-  dependsOn:
-    - resource:database
-    - resource:vector-db
 
 ---
 apiVersion: backstage.io/v1alpha1
