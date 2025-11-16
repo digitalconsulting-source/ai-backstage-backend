@@ -1,0 +1,66 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ai-backend-service
+  title: AI Backend Service
+  description: Template to create an AI backend component with API & TechDocs
+  tags:
+    - ai
+    - backend
+    - python
+spec:
+  owner: ai-team
+  type: service
+
+  parameters:
+    - title: Service Information
+      required:
+        - name
+        - owner
+      properties:
+        name:
+          type: string
+          title: Service name
+          description: Name of the backend component
+        owner:
+          type: string
+          title: Owner
+          description: Owner team or group in Backstage
+        description:
+          type: string
+          title: Description
+          description: Describe the service
+          default: AI backend microservice
+
+  steps:
+    - id: fetch
+      name: Fetch template skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          description: ${{ parameters.description }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=digitalconsulting-source&repo=${{ parameters.name }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+
+    - id: register
+      name: Register in Backstage
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Open Component in Catalog
+        url: ${{ steps.register.output.entityRef }}
+      - title: View Repository
+        url: ${{ steps.publish.output.remoteUrl }}
