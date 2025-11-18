@@ -32,6 +32,45 @@ spec:
           title: Owner
           description: Owner team or group in Backstage
           ui:field: OwnerPicker
+
+    - title: Azure Service Configuration (placeholders only)
+      properties:
+        azureSubscriptionId:
+          type: string
+          title: Azure Subscription ID
+        resourceGroupName:
+          type: string
+          title: Resource Group Name
+        azureRegion:
+          type: string
+          title: Azure Region
+          default: centralindia
+        openaiEndpoint:
+          type: string
+          title: Azure OpenAI / Foundry Endpoint
+        openaiDeployment:
+          type: string
+          title: Model Deployment Name
+        openaiApiVersion:
+          type: string
+          title: API Version
+          default: "2024-05-01-preview"
+        cosmosAccountName:
+          type: string
+          title: Cosmos DB Account Name
+        cosmosDatabaseName:
+          type: string
+          title: Cosmos DB Database Name
+        blobStorageAccount:
+          type: string
+          title: Blob Storage Account Name
+        blobContainerName:
+          type: string
+          title: Blob Container Name
+          default: "assets"
+        keyVaultName:
+          type: string
+          title: Key Vault Name
           
     - title: Choose the location
       required:
@@ -56,12 +95,25 @@ spec:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
+          # Azure configs to inject into files
+          azureSubscriptionId: ${{ parameters.azureSubscriptionId }}
+          resourceGroupName: ${{ parameters.resourceGroupName }}
+          azureRegion: ${{ parameters.azureRegion }}
+          openaiEndpoint: ${{ parameters.openaiEndpoint }}
+          openaiDeployment: ${{ parameters.openaiDeployment }}
+          openaiApiVersion: ${{ parameters.openaiApiVersion }}
+          cosmosAccountName: ${{ parameters.cosmosAccountName }}
+          cosmosDatabaseName: ${{ parameters.cosmosDatabaseName }}
+          blobStorageAccount: ${{ parameters.blobStorageAccount }}
+          blobContainerName: ${{ parameters.blobContainerName }}
+          keyVaultName: ${{ parameters.keyVaultName }}
 
     - id: publish
       name: Publish to GitHub
       action: publish:github
       input:
         repoUrl: ${{ parameters.repoUrl }}
+        repovisibility: private
         defaultBranch: main
         description: ${{ parameters.description }}
 
