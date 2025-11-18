@@ -98,8 +98,11 @@ spec:
       properties:
         repoUrl:
           type: string
-          ui:widget: repo-url
           title: Repository URL
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
 
   steps:
     - id: fetch-template
