@@ -140,7 +140,6 @@ spec:
       action: publish:github
       input:
         repoUrl: ${{ parameters.repoUrl }}
-        allowReleases: false
         description: ${{ parameters.description }}
 
     - id: register
