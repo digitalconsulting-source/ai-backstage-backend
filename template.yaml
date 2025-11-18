@@ -18,7 +18,6 @@ spec:
     - title: Basic Service Information
       required:
         - name
-        - description
         - owner
       properties:
         name:
