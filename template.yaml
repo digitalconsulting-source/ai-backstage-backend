@@ -13,25 +13,39 @@ spec:
   type: service
 
   parameters:
-    - title: Service Information
+    - title: Provide basic backend information
       required:
         - name
         - owner
       properties:
         name:
           type: string
-          title: Service name
-          description: Name of the backend component
-        owner:
-          type: string
-          title: Owner
-          description: Owner team or group in Backstage
+          title: Name of the backend service name
+          description: Unique name of the backend service
+          ui:autofocus: true
         description:
           type: string
           title: Description
           description: Describe the service
-          default: AI backend microservice
-
+        owner:
+          type: string
+          title: Owner
+          description: Owner team or group in Backstage
+          ui:field: OwnerPicker
+          
+    - title: Choose the location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          type: string
+          title: Repository location
+          description: Location of the repository, where the repo will be created
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+              
   steps:
     - id: fetch
       name: Fetch template skeleton
@@ -47,7 +61,7 @@ spec:
       name: Publish to GitHub
       action: publish:github
       input:
-        repoUrl: github.com?owner=digitalconsulting-source&repo=${{ parameters.name }}
+        repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
         description: ${{ parameters.description }}
 
@@ -60,7 +74,7 @@ spec:
 
   output:
     links:
-      - title: Open Component in Catalog
+      - title: Open Service in Catalog
         url: ${{ steps.register.output.entityRef }}
       - title: View Repository
         url: ${{ steps.publish.output.remoteUrl }}
