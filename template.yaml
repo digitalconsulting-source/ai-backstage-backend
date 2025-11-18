@@ -113,7 +113,6 @@ spec:
       action: publish:github
       input:
         repoUrl: ${{ parameters.repoUrl }}
-        repovisibility: private
         defaultBranch: main
         description: ${{ parameters.description }}
 
