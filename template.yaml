@@ -28,8 +28,10 @@ spec:
           type: string
           title: Description
         owner:
-          type: string
           title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
 
     - title: Azure Provisioning Settings
       required:
