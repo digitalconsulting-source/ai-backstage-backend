@@ -140,6 +140,8 @@ spec:
       input:
         repoUrl: ${{ parameters.repoUrl }}
         description: ${{ parameters.description }}
+        repoOwner: ${{ (parseRepoUrl parameters.repoUrl).owner }}
+        repoName: ${{ (parseRepoUrl parameters.repoUrl).repo }}
 
     - id: register
       name: Register in Backstage Catalog
