@@ -1,35 +1,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{ values.name }}
-  description: ${{ values.description }}
+  name: ${{ values.name | dump }}
   annotations:
+    github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
-  lifecycle: production
-  owner: ${{ values.owner }}
-  providesApis:
-    - ${{ values.name }}-api
-
----
-apiVersion: backstage.io/v1alpha1
-kind: API
-metadata:
-  name: ${{ values.name }}-api
-  description: REST API for ${{ values.name }}
-spec:
-  type: openapi
-  owner: ${{ values.owner }}
-  definition: |
-    openapi: "3.0.0"
-    info:
-      title: "${{ values.name }} API"
-      version: "1.0.0"
-    paths:
-      /predict:
-        post:
-          summary: "Perform prediction"
-          responses:
-            "200":
-              description: "Successful prediction"
+  lifecycle: experimental
+  owner: ${{values.owner | dump}}
