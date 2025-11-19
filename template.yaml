@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: ai-backend-service
-  title: AI Backend Service with Azure Provisioning
-  description: Creates an AI backend + auto-provisions Azure resources using Terraform
+  title: Backend Service for RAG application
+  description: Use this template to create backend services for RAG based application with Azure resources using Terraform
   tags:
     - ai
     - backend
@@ -116,7 +116,8 @@ spec:
           name: ${{ parameters.name }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
-
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+      
           # Azure
           azureSubscriptionId: ${{ parameters.azureSubscriptionId }}
           resourceGroupName: ${{ parameters.resourceGroupName }}
@@ -140,15 +141,13 @@ spec:
       input:
         repoUrl: ${{ parameters.repoUrl }}
         description: ${{ parameters.description }}
-        destination: ${{ parameters.repoUrl | parseRepoUrl }}
-        owner: ${{ parameters.owner }}
+
 
     - id: register
       name: Register in Backstage Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        # repoContentsUrl: ${{ steps.publish.output.repoContentsUrl | replace("/tree/", "/blob/") }}
         catalogInfoPath: '/catalog-info.yaml'
 
   output:
