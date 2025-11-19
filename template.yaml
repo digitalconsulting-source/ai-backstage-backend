@@ -1,158 +1,81 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: ai-backend-service
-  title: Backend Service for RAG application
-  description: Use this template to create backend services for RAG based application with Azure resources using Terraform
+  name: create-react-app-template
+  title: Create React App Template - Test
+  description: Create a new CRA website project
   tags:
-    - ai
-    - backend
-    - python
-    - azure
-    - terraform
+    - react
+    - cra
 spec:
-  owner: ai-team
-  type: service
-
+  owner: web@example.com
+  type: website
   parameters:
-    - title: Basic Service Information
+    - title: Provide some simple information
       required:
-        - name
+        - component_id
         - owner
       properties:
-        name:
+        component_id:
+          title: Name
           type: string
-          title: Service Name
+          description: Unique name of the component
+          ui:field: EntityNamePicker
         description:
-          type: string
           title: Description
+          type: string
+          description: Help others understand what this website is for.
         owner:
           title: Owner
           type: string
           description: Owner of the component
           ui:field: OwnerPicker
-
-    - title: Azure Provisioning Settings
-      required:
-        - azureSubscriptionId
-        - resourceGroupName
-        - azureRegion
-        - cosmosAccountName
-        - cosmosDatabaseName
-        - storageAccountName
-        - keyVaultName
-        - openaiEndpoint
-        - openaiDeployment
-      properties:
-        azureSubscriptionId:
-          type: string
-          title: Azure Subscription ID
-        resourceGroupName:
-          type: string
-          title: Resource Group Name
-        azureRegion:
-          type: string
-          title: Azure Region
-          enum:
-            - centralindia
-            - southindia
-            - westindia          
-          default: centralindia
-
-        # Azure OpenAI
-        openaiEndpoint:
-          type: string
-          title: Azure OpenAI / Foundry Endpoint
-        openaiDeployment:
-          type: string
-          title: Model Deployment
-        openaiSku:
-          type: string
-          title: OpenAI SKU
-          default: "S0"
-
-        # Cosmos DB
-        cosmosAccountName:
-          type: string
-          title: Cosmos DB Account Name
-        cosmosDatabaseName:
-          type: string
-          title: Cosmos DB Database Name
-
-        # Storage
-        storageAccountName:
-          type: string
-          title: Storage Account Name
-        blobContainerName:
-          type: string
-          title: Blob Container Name
-          default: "assets"
-
-        # Key Vault
-        keyVaultName:
-          type: string
-          title: Key Vault Name
-
-    - title: Repository Info
+          ui:options:
+            allowedKinds:
+              - Group
+    - title: Choose a location
       required:
         - repoUrl
       properties:
         repoUrl:
+          title: Repository Location
           type: string
-          title: Repository URL
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
               - github.com
-
   steps:
-    - id: fetch-template
-      name: Scaffold Files
+    - id: template
+      name: Fetch Skeleton + Template
       action: fetch:template
       input:
         url: ./skeleton
+        copyWithoutRender:
+          - .github/workflows/*
         values:
-          # Basic info
-          name: ${{ parameters.name }}
+          component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          owner: ${{ parameters.owner }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
-      
-          # Azure
-          azureSubscriptionId: ${{ parameters.azureSubscriptionId }}
-          resourceGroupName: ${{ parameters.resourceGroupName }}
-          azureRegion: ${{ parameters.azureRegion }}
-
-          openaiEndpoint: ${{ parameters.openaiEndpoint }}
-          openaiDeployment: ${{ parameters.openaiDeployment }}
-          openaiSku: ${{ parameters.openaiSku }}
-
-          cosmosAccountName: ${{ parameters.cosmosAccountName }}
-          cosmosDatabaseName: ${{ parameters.cosmosDatabaseName }}
-
-          storageAccountName: ${{ parameters.storageAccountName }}
-          blobContainerName: ${{ parameters.blobContainerName }}
-
-          keyVaultName: ${{ parameters.keyVaultName }}
+          owner: ${{ parameters.owner }}
 
     - id: publish
-      name: Publish to GitHub
+      name: Publish
       action: publish:github
       input:
+        description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}
-        description: ${{ parameters.description }}
-
 
     - id: register
-      name: Register in Backstage Catalog
+      name: Register
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
+        catalogInfoPath: "/catalog-info.yaml"
 
   output:
     links:
-      - title: Open in Catalog
-        url: ${{ steps.register.output.entityRef }}
-      - title: View Repository
+      - title: Repository
         url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
