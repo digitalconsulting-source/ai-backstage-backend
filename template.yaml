@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: ai-backend-service
-  title: Backend Service for RAG application
+  title: Backend Service for RAG applications
   description: Use this template to create backend services for RAG based application with Azure resources using Terraform
   tags:
     - ai
